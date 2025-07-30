@@ -7,8 +7,8 @@
     @apply bg-f1-bg text-f1-text font-inter;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     background-image: 
-      radial-gradient(circle at 20% 80%, rgba(10, 33, 192, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(220, 20, 60, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 20% 80%, rgba(59, 196, 242, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(242, 99, 120, 0.03) 0%, transparent 50%),
       url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 50 Q25 25 50 50 T90 50' stroke='%23ffffff' stroke-width='0.5' fill='none' opacity='0.02'/%3E%3C/svg%3E");
   }
   
@@ -30,6 +30,41 @@
 }
 
 @layer components {
+  /* New Gradient Card Style - Exact match to reference */
+  .gradient-card {
+    @apply relative rounded-2xl p-px overflow-hidden;
+  }
+  
+  .gradient-card::before {
+    content: '';
+    @apply absolute inset-0 rounded-2xl overflow-hidden;
+  }
+  
+  .gradient-card::after {
+    content: '';
+    @apply inset-0 absolute pointer-events-none select-none;
+  }
+  
+  .gradient-card .gradient-bg {
+    @apply block -translate-x-1/2 -translate-y-1/3 size-24 blur-xl;
+    background: linear-gradient(135deg, rgb(122, 105, 249), rgb(242, 99, 120), rgb(245, 131, 63));
+  }
+  
+  .gradient-card .border-glow {
+    @apply inset-0 absolute pointer-events-none select-none;
+    animation: 10s ease-in-out 0s infinite alternate none running border-glow-translate;
+  }
+  
+  .gradient-card .border-glow-inner {
+    @apply block z-0 h-full w-12 blur-xl -translate-x-1/2 rounded-full;
+    animation: 10s ease-in-out 0s infinite alternate none running border-glow-scale;
+    background: linear-gradient(135deg, rgb(122, 105, 249), rgb(242, 99, 120), rgb(245, 131, 63));
+  }
+  
+  .gradient-card .content-wrapper {
+    @apply relative z-[1] bg-f1-card/90 backdrop-blur-xl rounded-2xl w-full h-full;
+  }
+  
   /* Premium Cards with Fixed Glow Border */
   .premium-card {
     @apply relative overflow-hidden rounded-2xl bg-f1-card/60 backdrop-blur-xl;
@@ -58,13 +93,13 @@
     content: '';
     @apply absolute inset-0 rounded-2xl z-[1];
     background: 
-      linear-gradient(45deg, transparent 30%, rgba(10, 33, 192, 0.3) 50%, transparent 70%),
-      linear-gradient(-45deg, transparent 30%, rgba(10, 33, 192, 0.3) 50%, transparent 70%);
+      linear-gradient(45deg, transparent 30%, rgba(59, 196, 242, 0.3) 50%, transparent 70%),
+      linear-gradient(-45deg, transparent 30%, rgba(59, 196, 242, 0.3) 50%, transparent 70%);
     background-size: 100% 100%, 100% 100%;
     background-position: 0 0, 0 0;
     box-shadow: 
-      inset 0 0 0 1px rgba(10, 33, 192, 0.2),
-      0 0 20px rgba(10, 33, 192, 0.1);
+      inset 0 0 0 1px rgba(59, 196, 242, 0.2),
+      0 0 20px rgba(59, 196, 242, 0.1);
   }
   
   /* Status Cards */
@@ -104,7 +139,7 @@
   /* Buttons */
   .btn-primary {
     @apply bg-gradient-to-r from-f1-accent to-f1-accent/80 hover:from-f1-accent/90 hover:to-f1-accent text-white font-semibold py-4 px-8 rounded-xl shadow-xl hover:shadow-2xl hover:shadow-f1-accent/25 hover:scale-105 transition-all duration-300;
-    box-shadow: 0 10px 30px rgba(10, 33, 192, 0.3);
+    box-shadow: 0 10px 30px rgba(59, 196, 242, 0.3);
   }
   
   .btn-secondary {
@@ -194,8 +229,8 @@
   /* F1 Background Elements */
   .f1-bg-pattern {
     background-image: 
-      radial-gradient(circle at 25% 25%, rgba(10, 33, 192, 0.05) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, rgba(220, 20, 60, 0.05) 0%, transparent 50%);
+      radial-gradient(circle at 25% 25%, rgba(59, 196, 242, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(242, 99, 120, 0.05) 0%, transparent 50%);
   }
 }
 
@@ -209,10 +244,32 @@
   }
   
   .shadow-f1 {
-    box-shadow: 0 20px 40px rgba(10, 33, 192, 0.15);
+    box-shadow: 0 20px 40px rgba(59, 196, 242, 0.15);
   }
   
   .shadow-f1-hover {
-    box-shadow: 0 30px 60px rgba(10, 33, 192, 0.25);
+    box-shadow: 0 30px 60px rgba(59, 196, 242, 0.25);
   }
+}
+
+/* New gradient animations */
+@keyframes border-glow-translate {
+  0% { transform: translateX(-50%) translateY(-50%); }
+  100% { transform: translateX(50%) translateY(50%); }
+}
+
+@keyframes border-glow-scale {
+  0% { transform: scale(0.8); }
+  100% { transform: scale(1.2); }
+}
+
+@keyframes star-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes star-shine {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
 } 

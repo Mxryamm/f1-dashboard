@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend, Filler } from 'chart.js'
 import { Line, Bar, Doughnut } from 'react-chartjs-2'
+import GradientCard from '../components/GradientCard'
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend, Filler)
@@ -220,7 +221,7 @@ const Standings = () => {
 
       {/* Driver Standings Table */}
       <div className="px-6 lg:px-16 mb-12">
-        <div className="premium-card overflow-hidden">
+        <GradientCard className="overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-f1-card/30 border-b border-f1-card">
@@ -291,7 +292,7 @@ const Standings = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </GradientCard>
       </div>
 
       {/* Performance Trends Charts */}
@@ -300,7 +301,7 @@ const Standings = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Lap Time Trends */}
-          <div className="premium-card p-6">
+          <GradientCard className="p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white">Lap Time Trends</h3>
               <select 
@@ -316,26 +317,26 @@ const Standings = () => {
             <div className="h-64">
               <Line data={lapTimeData} options={chartOptions} />
             </div>
-          </div>
+          </GradientCard>
 
           {/* Sector Times */}
-          <div className="premium-card p-6">
+          <GradientCard className="p-6">
             <h3 className="text-xl font-semibold text-white mb-6">Fastest Sector Times</h3>
             <div className="h-64">
               <Bar data={sectorData} options={chartOptions} />
             </div>
-          </div>
+          </GradientCard>
         </div>
 
         {/* Points Distribution */}
-        <div className="premium-card p-6">
+        <GradientCard className="p-6">
           <h3 className="text-xl font-semibold text-white mb-6">Championship Points Distribution</h3>
           <div className="h-64 flex items-center justify-center">
             <div className="w-96 h-64">
               <Doughnut data={pointsDistributionData} options={chartOptions} />
             </div>
           </div>
-        </div>
+        </GradientCard>
       </div>
     </div>
   )

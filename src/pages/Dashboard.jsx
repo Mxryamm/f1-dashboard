@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import GradientCard from '../components/GradientCard'
 
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -194,11 +195,11 @@ const Dashboard = () => {
       <section className="px-6 lg:px-16 mt-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {quickLookTiles.map((tile, index) => (
-            <div 
+            <GradientCard 
               key={index} 
               data-animate="" 
               style={{ animationDelay: `${index * 0.1}s` }}
-              className="premium-card p-6"
+              className="p-6"
             >
               <div className="flex items-center justify-between mb-4">
                 <span className="text-3xl">{tile.icon}</span>
@@ -206,7 +207,7 @@ const Dashboard = () => {
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">{tile.value}</h3>
               <p className="text-f1-text-secondary text-sm">{tile.subtitle}</p>
-            </div>
+            </GradientCard>
           ))}
         </div>
       </section>
@@ -217,7 +218,7 @@ const Dashboard = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Driver Stats Card */}
-          <div className="premium-card p-6">
+          <GradientCard className="p-6">
             <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
               <span className="text-2xl">🧍</span>
               Driver Stats
@@ -240,10 +241,10 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </GradientCard>
 
           {/* Team Stats Card */}
-          <div className="premium-card p-6">
+          <GradientCard className="p-6">
             <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
               <span className="text-2xl">🏢</span>
               Team Stats
@@ -262,7 +263,7 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </GradientCard>
         </div>
       </section>
 
@@ -270,7 +271,7 @@ const Dashboard = () => {
       <section className="px-6 lg:px-16 mt-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Lap Time Trend */}
-          <div className="premium-card p-6">
+          <GradientCard className="p-6">
             <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
               <span className="text-2xl">⏱️</span>
               Lap Time Trend
@@ -278,10 +279,10 @@ const Dashboard = () => {
             <div className="h-48 flex items-center justify-center text-f1-text-secondary">
               <p className="text-body">Chart placeholder - Last 5 races lap time comparison</p>
             </div>
-          </div>
+          </GradientCard>
 
           {/* Race Schedule */}
-          <div className="premium-card p-6">
+          <GradientCard className="p-6">
             <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
               <span className="text-2xl">📅</span>
               Race Schedule
@@ -302,7 +303,7 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </GradientCard>
         </div>
       </section>
 
@@ -312,7 +313,7 @@ const Dashboard = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Probable Podium Chart */}
-          <div className="bg-f1-card/60 backdrop-blur rounded-xl border border-f1-card p-6">
+          <GradientCard className="p-6">
             <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
               <span className="text-2xl">🥇</span>
               Probable Podium
@@ -339,10 +340,10 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </GradientCard>
 
           {/* Driver Momentum Chart */}
-          <div className="bg-f1-card/60 backdrop-blur rounded-xl border border-f1-card p-6">
+          <GradientCard className="p-6">
             <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
               <span className="text-2xl">📉</span>
               Driver Momentum
@@ -350,7 +351,7 @@ const Dashboard = () => {
             <div className="h-48 flex items-center justify-center text-f1-text-secondary">
               <p className="text-body">Chart placeholder - Past 5 races performance trend</p>
             </div>
-          </div>
+          </GradientCard>
         </div>
       </section>
 

@@ -10,7 +10,7 @@ export default {
         // Premium Color Palette
         'f1-bg': '#141619',
         'f1-card': '#2C2E3A',
-        'f1-accent': '#0A21C0',
+        'f1-accent': '#3BC4F2', // Changed from dark blue to light blue
         'f1-secondary': '#050A44',
         'f1-text': '#FFFFFF',
         'f1-text-secondary': '#B3B4BD',
@@ -27,7 +27,7 @@ export default {
         'error-red': '#EF4444',
         
         // Legacy colors for backward compatibility
-        'f1-red': '#0A21C0',
+        'f1-red': '#3BC4F2', // Updated to light blue
         'f1-dark': '#141619',
         'f1-gray': '#2C2E3A',
         'f1-light-gray': '#B3B4BD',
