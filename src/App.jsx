@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Header from './components/Header'
 import Dashboard from './pages/Dashboard'
 import Standings from './pages/Standings'
+import Analytics from './pages/Analytics'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('dashboard')
@@ -10,6 +11,8 @@ function App() {
     switch (currentPage) {
       case 'standings':
         return <Standings />
+      case 'analytics':
+        return <Analytics />
       case 'dashboard':
       default:
         return <Dashboard />

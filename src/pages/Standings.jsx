@@ -1,10 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend, Filler } from 'chart.js'
-import { Line, Bar, Doughnut } from 'react-chartjs-2'
 import GradientCard from '../components/GradientCard'
-
-// Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend, Filler)
 
 const Standings = () => {
   const [drivers, setDrivers] = useState([])
@@ -12,110 +7,30 @@ const Standings = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortField, setSortField] = useState('position')
   const [sortDirection, setSortDirection] = useState('asc')
-  const [selectedDriver, setSelectedDriver] = useState('Max Verstappen')
 
-  // Sample driver data
+  // Sample driver data with more details
   const driverData = [
-    { position: 1, name: 'Max Verstappen', team: 'Red Bull', points: 575, lastRace: 'P1', flag: '🇳🇱', teamColor: 'team-redbull' },
-    { position: 2, name: 'Sergio Pérez', team: 'Red Bull', points: 285, lastRace: 'P3', flag: '🇲🇽', teamColor: 'team-redbull' },
-    { position: 3, name: 'Lewis Hamilton', team: 'Mercedes', points: 234, lastRace: 'P2', flag: '🇬🇧', teamColor: 'team-mercedes' },
-    { position: 4, name: 'Carlos Sainz', team: 'Ferrari', points: 200, lastRace: 'P4', flag: '🇪🇸', teamColor: 'team-ferrari' },
-    { position: 5, name: 'Lando Norris', team: 'McLaren', points: 195, lastRace: 'P1', flag: '🇬🇧', teamColor: 'team-mclaren' },
-    { position: 6, name: 'Charles Leclerc', team: 'Ferrari', points: 170, lastRace: 'P5', flag: '🇲🇨', teamColor: 'team-ferrari' },
-    { position: 7, name: 'George Russell', team: 'Mercedes', points: 160, lastRace: 'P6', flag: '🇬🇧', teamColor: 'team-mercedes' },
-    { position: 8, name: 'Oscar Piastri', team: 'McLaren', points: 145, lastRace: 'P7', flag: '🇦🇺', teamColor: 'team-mclaren' },
-    { position: 9, name: 'Fernando Alonso', team: 'Aston Martin', points: 130, lastRace: 'P8', flag: '🇪🇸', teamColor: 'team-aston' },
-    { position: 10, name: 'Lance Stroll', team: 'Aston Martin', points: 115, lastRace: 'P9', flag: '🇨🇦', teamColor: 'team-aston' },
-    { position: 11, name: 'Pierre Gasly', team: 'Alpine', points: 100, lastRace: 'P10', flag: '🇫🇷', teamColor: 'team-alpine' },
-    { position: 12, name: 'Esteban Ocon', team: 'Alpine', points: 85, lastRace: 'P11', flag: '🇫🇷', teamColor: 'team-alpine' },
-    { position: 13, name: 'Alexander Albon', team: 'Williams', points: 70, lastRace: 'P12', flag: '🇹🇭', teamColor: 'team-williams' },
-    { position: 14, name: 'Yuki Tsunoda', team: 'RB', points: 55, lastRace: 'P13', flag: '🇯🇵', teamColor: 'team-rb' },
-    { position: 15, name: 'Valtteri Bottas', team: 'Kick Sauber', points: 40, lastRace: 'P14', flag: '🇫🇮', teamColor: 'team-sauber' },
-    { position: 16, name: 'Nico Hulkenberg', team: 'Haas', points: 30, lastRace: 'P15', flag: '🇩🇪', teamColor: 'team-haas' },
-    { position: 17, name: 'Daniel Ricciardo', team: 'RB', points: 25, lastRace: 'P16', flag: '🇦🇺', teamColor: 'team-rb' },
-    { position: 18, name: 'Zhou Guanyu', team: 'Kick Sauber', points: 15, lastRace: 'P17', flag: '🇨🇳', teamColor: 'team-sauber' },
-    { position: 19, name: 'Kevin Magnussen', team: 'Haas', points: 10, lastRace: 'P18', flag: '🇩🇰', teamColor: 'team-haas' },
-    { position: 20, name: 'Logan Sargeant', team: 'Williams', points: 5, lastRace: 'P19', flag: '🇺🇸', teamColor: 'team-williams' },
+    { position: 1, name: 'Max Verstappen', number: '1', country: '🇳🇱 Netherlands', team: 'Red Bull Racing', points: 575, lastRace: 'P1', flag: '🇳🇱', teamColor: 'team-redbull' },
+    { position: 2, name: 'Sergio Pérez', number: '11', country: '🇲🇽 Mexico', team: 'Red Bull Racing', points: 285, lastRace: 'P3', flag: '🇲🇽', teamColor: 'team-redbull' },
+    { position: 3, name: 'Lewis Hamilton', number: '44', country: '🇬🇧 Great Britain', team: 'Mercedes', points: 234, lastRace: 'P2', flag: '🇬🇧', teamColor: 'team-mercedes' },
+    { position: 4, name: 'Carlos Sainz', number: '55', country: '🇪🇸 Spain', team: 'Ferrari', points: 200, lastRace: 'P4', flag: '🇪🇸', teamColor: 'team-ferrari' },
+    { position: 5, name: 'Lando Norris', number: '4', country: '🇬🇧 Great Britain', team: 'McLaren', points: 195, lastRace: 'P1', flag: '🇬🇧', teamColor: 'team-mclaren' },
+    { position: 6, name: 'Charles Leclerc', number: '16', country: '🇲🇨 Monaco', team: 'Ferrari', points: 170, lastRace: 'P5', flag: '🇲🇨', teamColor: 'team-ferrari' },
+    { position: 7, name: 'George Russell', number: '63', country: '🇬🇧 Great Britain', team: 'Mercedes', points: 160, lastRace: 'P6', flag: '🇬🇧', teamColor: 'team-mercedes' },
+    { position: 8, name: 'Oscar Piastri', number: '81', country: '🇦🇺 Australia', team: 'McLaren', points: 145, lastRace: 'P7', flag: '🇦🇺', teamColor: 'team-mclaren' },
+    { position: 9, name: 'Fernando Alonso', number: '14', country: '🇪🇸 Spain', team: 'Aston Martin', points: 130, lastRace: 'P8', flag: '🇪🇸', teamColor: 'team-aston' },
+    { position: 10, name: 'Lance Stroll', number: '18', country: '🇨🇦 Canada', team: 'Aston Martin', points: 115, lastRace: 'P9', flag: '🇨🇦', teamColor: 'team-aston' },
+    { position: 11, name: 'Pierre Gasly', number: '10', country: '🇫🇷 France', team: 'Alpine', points: 100, lastRace: 'P10', flag: '🇫🇷', teamColor: 'team-alpine' },
+    { position: 12, name: 'Esteban Ocon', number: '31', country: '🇫🇷 France', team: 'Alpine', points: 85, lastRace: 'P11', flag: '🇫🇷', teamColor: 'team-alpine' },
+    { position: 13, name: 'Alexander Albon', number: '23', country: '🇹🇭 Thailand', team: 'Williams', points: 70, lastRace: 'P12', flag: '🇹🇭', teamColor: 'team-williams' },
+    { position: 14, name: 'Yuki Tsunoda', number: '22', country: '🇯🇵 Japan', team: 'RB', points: 55, lastRace: 'P13', flag: '🇯🇵', teamColor: 'team-rb' },
+    { position: 15, name: 'Valtteri Bottas', number: '77', country: '🇫🇮 Finland', team: 'Kick Sauber', points: 40, lastRace: 'P14', flag: '🇫🇮', teamColor: 'team-sauber' },
+    { position: 16, name: 'Nico Hulkenberg', number: '27', country: '🇩🇪 Germany', team: 'Haas', points: 30, lastRace: 'P15', flag: '🇩🇪', teamColor: 'team-haas' },
+    { position: 17, name: 'Daniel Ricciardo', number: '3', country: '🇦🇺 Australia', team: 'RB', points: 25, lastRace: 'P16', flag: '🇦🇺', teamColor: 'team-rb' },
+    { position: 18, name: 'Zhou Guanyu', number: '24', country: '🇨🇳 China', team: 'Kick Sauber', points: 15, lastRace: 'P17', flag: '🇨🇳', teamColor: 'team-sauber' },
+    { position: 19, name: 'Kevin Magnussen', number: '20', country: '🇩🇰 Denmark', team: 'Haas', points: 10, lastRace: 'P18', flag: '🇩🇰', teamColor: 'team-haas' },
+    { position: 20, name: 'Logan Sargeant', number: '2', country: '🇺🇸 United States', team: 'Williams', points: 5, lastRace: 'P19', flag: '🇺🇸', teamColor: 'team-williams' },
   ]
-
-  // Chart data
-  const lapTimeData = {
-    labels: ['Lap 1', 'Lap 5', 'Lap 10', 'Lap 15', 'Lap 20', 'Lap 25', 'Lap 30', 'Lap 35', 'Lap 40', 'Lap 45'],
-    datasets: [
-      {
-        label: 'Max Verstappen',
-        data: [92.1, 91.8, 91.5, 91.2, 90.9, 90.6, 90.3, 90.0, 89.7, 89.4],
-        borderColor: '#1E41FF',
-        backgroundColor: 'rgba(30, 65, 255, 0.1)',
-        tension: 0.4,
-        fill: true
-      },
-      {
-        label: 'Lando Norris',
-        data: [92.5, 92.2, 91.9, 91.6, 91.3, 91.0, 90.7, 90.4, 90.1, 89.8],
-        borderColor: '#FF8000',
-        backgroundColor: 'rgba(255, 128, 0, 0.1)',
-        tension: 0.4,
-        fill: true
-      },
-      {
-        label: 'Lewis Hamilton',
-        data: [92.8, 92.5, 92.2, 91.9, 91.6, 91.3, 91.0, 90.7, 90.4, 90.1],
-        borderColor: '#00D2BE',
-        backgroundColor: 'rgba(0, 210, 190, 0.1)',
-        tension: 0.4,
-        fill: true
-      }
-    ]
-  }
-
-  const sectorData = {
-    labels: ['Sector 1', 'Sector 2', 'Sector 3'],
-    datasets: [
-      {
-        label: 'Max Verstappen',
-        data: [28.5, 32.1, 28.8],
-        backgroundColor: '#1E41FF'
-      },
-      {
-        label: 'Lando Norris',
-        data: [28.7, 32.3, 29.0],
-        backgroundColor: '#FF8000'
-      },
-      {
-        label: 'Lewis Hamilton',
-        data: [28.9, 32.5, 29.2],
-        backgroundColor: '#00D2BE'
-      },
-      {
-        label: 'Carlos Sainz',
-        data: [29.1, 32.7, 29.4],
-        backgroundColor: '#DC143C'
-      },
-      {
-        label: 'Charles Leclerc',
-        data: [29.3, 32.9, 29.6],
-        backgroundColor: '#DC143C'
-      }
-    ]
-  }
-
-  const pointsDistributionData = {
-    labels: ['Red Bull', 'Ferrari', 'McLaren', 'Mercedes', 'Aston Martin', 'Others'],
-    datasets: [{
-      data: [860, 370, 340, 394, 245, 315],
-      backgroundColor: [
-        '#1E41FF',
-        '#DC143C',
-        '#FF8000',
-        '#00D2BE',
-        '#006F62',
-        '#B3B4BD'
-      ],
-      borderWidth: 2,
-      borderColor: '#2C2E3A'
-    }]
-  }
 
   // Initialize data
   useEffect(() => {
@@ -127,7 +42,8 @@ const Standings = () => {
   useEffect(() => {
     const filtered = drivers.filter(driver =>
       driver.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      driver.team.toLowerCase().includes(searchQuery.toLowerCase())
+      driver.team.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      driver.country.toLowerCase().includes(searchQuery.toLowerCase())
     )
     setFilteredDrivers(filtered)
   }, [searchQuery, drivers])
@@ -142,7 +58,7 @@ const Standings = () => {
       let aVal = a[field]
       let bVal = b[field]
 
-      if (field === 'name' || field === 'team') {
+      if (field === 'name' || field === 'team' || field === 'country') {
         aVal = aVal.toLowerCase()
         bVal = bVal.toLowerCase()
       }
@@ -167,27 +83,20 @@ const Standings = () => {
     return 'bg-f1-card border border-white/10 text-f1-text'
   }
 
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        labels: {
-          color: '#FFFFFF',
-          font: { family: 'Inter' }
-        }
-      }
-    },
-    scales: {
-      x: {
-        ticks: { color: '#B3B4BD', font: { family: 'Inter' } },
-        grid: { color: '#2C2E3A' }
-      },
-      y: {
-        ticks: { color: '#B3B4BD', font: { family: 'Inter' } },
-        grid: { color: '#2C2E3A' }
-      }
+  const getTeamColor = (team) => {
+    const teamColors = {
+      'Red Bull Racing': '#1E41FF',
+      'Ferrari': '#DC143C',
+      'McLaren': '#FF8000',
+      'Mercedes': '#00D2BE',
+      'Aston Martin': '#006F62',
+      'Alpine': '#0090FF',
+      'Williams': '#005AFF',
+      'RB': '#1E41FF',
+      'Kick Sauber': '#52E252',
+      'Haas': '#FFFFFF'
     }
+    return teamColors[team] || '#B3B4BD'
   }
 
   return (
@@ -195,7 +104,7 @@ const Standings = () => {
       {/* Header */}
       <div className="px-6 lg:px-16 py-8">
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Driver Standings</h1>
-        <p className="text-f1-text-secondary text-body">Current championship standings and performance analysis</p>
+        <p className="text-f1-text-secondary text-body">Current championship standings and driver performance</p>
       </div>
 
       {/* Search and Filter */}
@@ -204,7 +113,7 @@ const Standings = () => {
           <div className="relative w-full md:w-96">
             <input
               type="text"
-              placeholder="Search drivers or teams..."
+              placeholder="Search drivers, teams, or countries..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-6 py-4 bg-f1-card/60 backdrop-blur border border-f1-card rounded-xl text-white placeholder-f1-text-secondary focus:outline-none focus:border-f1-accent transition-all duration-200"
@@ -237,6 +146,12 @@ const Standings = () => {
                     onClick={() => handleSort('name')}
                   >
                     DRIVER {getSortIcon('name')}
+                  </th>
+                  <th className="px-6 py-4 text-left text-caption font-semibold text-f1-text-secondary uppercase tracking-wider">
+                    NO.
+                  </th>
+                  <th className="px-6 py-4 text-left text-caption font-semibold text-f1-text-secondary uppercase tracking-wider">
+                    COUNTRY
                   </th>
                   <th 
                     className="px-6 py-4 text-left text-caption font-semibold text-f1-text-secondary uppercase tracking-wider cursor-pointer hover:text-white transition-colors"
@@ -272,14 +187,20 @@ const Standings = () => {
                         <div>
                           <p className="text-body font-semibold text-white">{driver.name}</p>
                           <div className="flex items-center space-x-2 mt-1">
-                            <div className={`w-3 h-3 rounded-full ${driver.teamColor.replace('team-', 'bg-')}`}></div>
+                            <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: getTeamColor(driver.team) }}></div>
                             <span className="text-caption text-f1-text-secondary">{driver.team}</span>
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`text-body font-medium ${driver.teamColor}`}>{driver.team}</span>
+                      <span className="text-body font-bold text-f1-accent">#{driver.number}</span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="text-body text-f1-text-secondary">{driver.country}</span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="text-body font-medium" style={{ color: getTeamColor(driver.team) }}>{driver.team}</span>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <span className="text-h3 font-bold text-f1-accent">{driver.points}</span>
@@ -295,48 +216,36 @@ const Standings = () => {
         </GradientCard>
       </div>
 
-      {/* Performance Trends Charts */}
+      {/* Constructor Standings */}
       <div className="px-6 lg:px-16 mb-12">
-        <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">Performance Trends</h2>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Lap Time Trends */}
-          <GradientCard className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-white">Lap Time Trends</h3>
-              <select 
-                value={selectedDriver}
-                onChange={(e) => setSelectedDriver(e.target.value)}
-                className="bg-f1-card/50 border border-white/10 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-f1-accent"
-              >
-                <option value="Max Verstappen">Max Verstappen</option>
-                <option value="Lando Norris">Lando Norris</option>
-                <option value="Lewis Hamilton">Lewis Hamilton</option>
-              </select>
+        <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">Constructor Standings</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { name: 'Red Bull', points: 860, wins: 15, color: '#1E41FF' },
+            { name: 'Ferrari', points: 370, wins: 5, color: '#DC143C' },
+            { name: 'McLaren', points: 340, wins: 8, color: '#FF8000' },
+            { name: 'Mercedes', points: 394, wins: 2, color: '#00D2BE' },
+            { name: 'Aston Martin', points: 245, wins: 0, color: '#006F62' },
+            { name: 'Alpine', points: 185, wins: 0, color: '#0090FF' }
+          ].map((constructor, index) => (
+            <div key={index} className="chroma-card p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-white">{constructor.name}</h3>
+                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: constructor.color }}></div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-f1-text-secondary">Points:</span>
+                  <span className="text-f1-accent font-bold">{constructor.points}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-f1-text-secondary">Wins:</span>
+                  <span className="text-white font-semibold">{constructor.wins}</span>
+                </div>
+              </div>
             </div>
-            <div className="h-64">
-              <Line data={lapTimeData} options={chartOptions} />
-            </div>
-          </GradientCard>
-
-          {/* Sector Times */}
-          <GradientCard className="p-6">
-            <h3 className="text-xl font-semibold text-white mb-6">Fastest Sector Times</h3>
-            <div className="h-64">
-              <Bar data={sectorData} options={chartOptions} />
-            </div>
-          </GradientCard>
+          ))}
         </div>
-
-        {/* Points Distribution */}
-        <GradientCard className="p-6">
-          <h3 className="text-xl font-semibold text-white mb-6">Championship Points Distribution</h3>
-          <div className="h-64 flex items-center justify-center">
-            <div className="w-96 h-64">
-              <Doughnut data={pointsDistributionData} options={chartOptions} />
-            </div>
-          </div>
-        </GradientCard>
       </div>
     </div>
   )
