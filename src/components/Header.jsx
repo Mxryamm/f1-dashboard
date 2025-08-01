@@ -34,7 +34,12 @@ const Header = ({ onPageChange, currentPage }) => {
         >
           Analytics
         </button>
-        <button className="hover:text-white transition">Predictions</button>
+        <button 
+          onClick={() => handlePageChange('predictions')}
+          className={`hover:text-white transition ${currentPage === 'predictions' ? 'text-white font-semibold' : ''}`}
+        >
+          Predictions
+        </button>
       </nav>
     </header>
   )

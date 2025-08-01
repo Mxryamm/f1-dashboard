@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend, Filler } from 'chart.js'
 import { Line, Bar, Doughnut } from 'react-chartjs-2'
 import ChromaGrid from '../components/ChromaGrid'
+import BlurText from '../components/BlurText'
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend, Filler)
@@ -101,114 +102,78 @@ const Analytics = () => {
     },
     scales: {
       x: {
-        ticks: { color: '#B3B4BD', font: { family: 'Inter' } },
-        grid: { color: '#2C2E3A' }
+        ticks: { color: '#FFFFFF' },
+        grid: { color: 'rgba(255, 255, 255, 0.1)' }
       },
       y: {
-        ticks: { color: '#B3B4BD', font: { family: 'Inter' } },
-        grid: { color: '#2C2E3A' }
+        ticks: { color: '#FFFFFF' },
+        grid: { color: 'rgba(255, 255, 255, 0.1)' }
       }
     }
   }
 
-  // Analytics cards data
-  const analyticsCards = [
-    {
-      title: "Fastest Lap",
-      value: "1:28.456",
-      subtitle: "Max Verstappen",
-      detail: "Lap 42 - Monaco GP"
-    },
-    {
-      title: "Average Lap Time",
-      value: "1:30.123",
-      subtitle: "Session Average",
-      detail: "Based on top 10 drivers"
-    },
-    {
-      title: "Pole Position",
-      value: "1:27.567",
-      subtitle: "Charles Leclerc",
-      detail: "Q3 - Monaco GP"
-    },
-    {
-      title: "Race Pace",
-      value: "1:31.234",
-      subtitle: "Consistent Pace",
-      detail: "±0.5s variance"
-    },
-    {
-      title: "Tire Degradation",
-      value: "0.8s",
-      subtitle: "Per stint",
-      detail: "Medium compound"
-    },
-    {
-      title: "Fuel Efficiency",
-      value: "2.1 kg/lap",
-      subtitle: "Optimal consumption",
-      detail: "Red Bull RB20"
-    }
+  const quickStats = [
+    { title: 'Fastest Lap', value: '1:28.456', subtitle: 'Max Verstappen', color: '#1E41FF' },
+    { title: 'Avg Lap Time', value: '1:30.123', subtitle: 'Red Bull Racing', color: '#1E41FF' },
+    { title: 'Top Speed', value: '345 km/h', subtitle: 'Lando Norris', color: '#FF8000' }
   ]
 
   return (
     <div className="min-h-screen pt-20">
       {/* Header */}
       <div className="px-6 lg:px-16 py-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Analytics & Performance</h1>
-        <p className="text-f1-text-secondary text-body">Advanced telemetry data and performance metrics</p>
+        <BlurText
+          text="Analytics Dashboard"
+          delay={150}
+          animateBy="words"
+          direction="top"
+          className="text-3xl md:text-4xl font-bold text-white mb-2"
+        />
+        <p className="text-f1-text-secondary text-body">Advanced performance analytics and insights</p>
       </div>
 
-      {/* Analytics Cards */}
+      {/* Quick Stats */}
       <div className="px-6 lg:px-16 mb-12">
-        <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">Key Metrics</h2>
+        <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">Quick Stats</h2>
         <ChromaGrid 
-          items={analyticsCards}
+          items={quickStats.map(stat => ({
+            title: stat.title,
+            value: stat.value,
+            subtitle: stat.subtitle,
+            borderColor: stat.color,
+            gradient: `linear-gradient(145deg, ${stat.color}, #000)`
+          }))}
           columns={3}
           className="mb-12"
         />
       </div>
 
-      {/* Performance Trends Charts */}
+      {/* Lap Time Analysis */}
       <div className="px-6 lg:px-16 mb-12">
-        <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">Performance Trends</h2>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Lap Time Trends */}
-          <div className="chroma-card p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-white">Lap Time Trends</h3>
-              <select 
-                value={selectedDriver}
-                onChange={(e) => setSelectedDriver(e.target.value)}
-                className="bg-f1-card/50 border border-white/10 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-f1-accent"
-              >
-                <option value="Max Verstappen">Max Verstappen</option>
-                <option value="Lando Norris">Lando Norris</option>
-                <option value="Lewis Hamilton">Lewis Hamilton</option>
-              </select>
-            </div>
-            <div className="h-64">
-              <Line data={lapTimeData} options={chartOptions} />
-            </div>
-          </div>
-
-          {/* Sector Times */}
-          <div className="chroma-card p-6">
-            <h3 className="text-xl font-semibold text-white mb-6">Fastest Sector Times</h3>
-            <div className="h-64">
-              <Bar data={sectorData} options={chartOptions} />
-            </div>
+        <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">Lap Time Analysis</h2>
+        <div className="chroma-card p-6">
+          <div className="h-80">
+            <Line data={lapTimeData} options={chartOptions} />
           </div>
         </div>
+      </div>
 
-        {/* Points Distribution */}
+      {/* Sector Performance */}
+      <div className="px-6 lg:px-16 mb-12">
+        <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">Sector Performance</h2>
         <div className="chroma-card p-6">
-          <h3 className="text-xl font-semibold text-white mb-6">Championship Points Distribution</h3>
-          <div className="h-64 flex items-center justify-center">
-            <div className="w-96 h-64">
-              <Doughnut data={pointsDistributionData} options={chartOptions} />
-            </div>
+          <div className="h-80">
+            <Bar data={sectorData} options={chartOptions} />
+          </div>
+        </div>
+      </div>
+
+      {/* Points Distribution */}
+      <div className="px-6 lg:px-16 mb-12">
+        <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">Constructor Points Distribution</h2>
+        <div className="chroma-card p-6">
+          <div className="h-80">
+            <Doughnut data={pointsDistributionData} options={chartOptions} />
           </div>
         </div>
       </div>

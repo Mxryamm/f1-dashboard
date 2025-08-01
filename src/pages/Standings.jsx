@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import GradientCard from '../components/GradientCard'
+import ChromaGrid from '../components/ChromaGrid'
+import BlurText from '../components/BlurText'
 
 const Standings = () => {
   const [drivers, setDrivers] = useState([])
@@ -99,11 +100,52 @@ const Standings = () => {
     return teamColors[team] || '#B3B4BD'
   }
 
+  // Transform driver data for ChromaGrid
+  const transformDriverData = (drivers) => {
+    return drivers.map(driver => ({
+      title: driver.name,
+      value: driver.points.toString(),
+      subtitle: driver.team,
+      detail: `${driver.flag} #${driver.number} | ${driver.lastRace}`,
+      borderColor: getTeamColor(driver.team),
+      gradient: `linear-gradient(145deg, ${getTeamColor(driver.team)}, #000)`,
+      handle: `P${driver.position}`
+    }))
+  }
+
+  // Transform constructor data for ChromaGrid
+  const transformConstructorData = (constructors) => {
+    return constructors.map(constructor => ({
+      title: constructor.name,
+      value: constructor.points.toString(),
+      subtitle: 'Constructor',
+      detail: `${constructor.wins} wins`,
+      borderColor: constructor.color,
+      gradient: `linear-gradient(145deg, ${constructor.color}, #000)`,
+      handle: constructor.name.toUpperCase()
+    }))
+  }
+
+  const constructorData = [
+    { name: 'Red Bull', points: 860, wins: 15, color: '#1E41FF' },
+    { name: 'Ferrari', points: 370, wins: 5, color: '#DC143C' },
+    { name: 'McLaren', points: 340, wins: 8, color: '#FF8000' },
+    { name: 'Mercedes', points: 394, wins: 2, color: '#00D2BE' },
+    { name: 'Aston Martin', points: 245, wins: 0, color: '#006F62' },
+    { name: 'Alpine', points: 185, wins: 0, color: '#0090FF' }
+  ]
+
   return (
     <div className="min-h-screen pt-20">
       {/* Header */}
       <div className="px-6 lg:px-16 py-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Driver Standings</h1>
+        <BlurText
+          text="Driver Standings"
+          delay={150}
+          animateBy="words"
+          direction="top"
+          className="text-3xl md:text-4xl font-bold text-white mb-2"
+        />
         <p className="text-f1-text-secondary text-body">Current championship standings and driver performance</p>
       </div>
 
@@ -128,124 +170,24 @@ const Standings = () => {
         </div>
       </div>
 
-      {/* Driver Standings Table */}
+      {/* Driver Standings Cards */}
       <div className="px-6 lg:px-16 mb-12">
-        <GradientCard className="overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-f1-card/30 border-b border-f1-card">
-                <tr>
-                  <th 
-                    className="px-6 py-4 text-left text-caption font-semibold text-f1-text-secondary uppercase tracking-wider cursor-pointer hover:text-white transition-colors"
-                    onClick={() => handleSort('position')}
-                  >
-                    POS {getSortIcon('position')}
-                  </th>
-                  <th 
-                    className="px-6 py-4 text-left text-caption font-semibold text-f1-text-secondary uppercase tracking-wider cursor-pointer hover:text-white transition-colors"
-                    onClick={() => handleSort('name')}
-                  >
-                    DRIVER {getSortIcon('name')}
-                  </th>
-                  <th className="px-6 py-4 text-left text-caption font-semibold text-f1-text-secondary uppercase tracking-wider">
-                    NO.
-                  </th>
-                  <th className="px-6 py-4 text-left text-caption font-semibold text-f1-text-secondary uppercase tracking-wider">
-                    COUNTRY
-                  </th>
-                  <th 
-                    className="px-6 py-4 text-left text-caption font-semibold text-f1-text-secondary uppercase tracking-wider cursor-pointer hover:text-white transition-colors"
-                    onClick={() => handleSort('team')}
-                  >
-                    TEAM {getSortIcon('team')}
-                  </th>
-                  <th 
-                    className="px-6 py-4 text-right text-caption font-semibold text-f1-text-secondary uppercase tracking-wider cursor-pointer hover:text-white transition-colors"
-                    onClick={() => handleSort('points')}
-                  >
-                    POINTS {getSortIcon('points')}
-                  </th>
-                  <th className="px-6 py-4 text-right text-caption font-semibold text-f1-text-secondary uppercase tracking-wider">
-                    LAST RACE
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredDrivers.map((driver, index) => (
-                  <tr 
-                    key={driver.position} 
-                    className="border-b border-f1-card/30 hover:bg-f1-card/30 transition-colors duration-200"
-                  >
-                    <td className="px-6 py-4">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${getPositionColor(driver.position)}`}>
-                        {driver.position}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center space-x-3">
-                        <span className="text-xl">{driver.flag}</span>
-                        <div>
-                          <p className="text-body font-semibold text-white">{driver.name}</p>
-                          <div className="flex items-center space-x-2 mt-1">
-                            <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: getTeamColor(driver.team) }}></div>
-                            <span className="text-caption text-f1-text-secondary">{driver.team}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="text-body font-bold text-f1-accent">#{driver.number}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="text-body text-f1-text-secondary">{driver.country}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="text-body font-medium" style={{ color: getTeamColor(driver.team) }}>{driver.team}</span>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <span className="text-h3 font-bold text-f1-accent">{driver.points}</span>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <span className="text-body font-semibold text-white">{driver.lastRace}</span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </GradientCard>
+        <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">Top Drivers</h2>
+        <ChromaGrid 
+          items={transformDriverData(filteredDrivers.slice(0, 9))}
+          columns={3}
+          className="mb-12"
+        />
       </div>
 
       {/* Constructor Standings */}
       <div className="px-6 lg:px-16 mb-12">
         <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">Constructor Standings</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            { name: 'Red Bull', points: 860, wins: 15, color: '#1E41FF' },
-            { name: 'Ferrari', points: 370, wins: 5, color: '#DC143C' },
-            { name: 'McLaren', points: 340, wins: 8, color: '#FF8000' },
-            { name: 'Mercedes', points: 394, wins: 2, color: '#00D2BE' },
-            { name: 'Aston Martin', points: 245, wins: 0, color: '#006F62' },
-            { name: 'Alpine', points: 185, wins: 0, color: '#0090FF' }
-          ].map((constructor, index) => (
-            <div key={index} className="chroma-card p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-white">{constructor.name}</h3>
-                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: constructor.color }}></div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-f1-text-secondary">Points:</span>
-                  <span className="text-f1-accent font-bold">{constructor.points}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-f1-text-secondary">Wins:</span>
-                  <span className="text-white font-semibold">{constructor.wins}</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <ChromaGrid 
+          items={transformConstructorData(constructorData)}
+          columns={3}
+          className="mb-12"
+        />
       </div>
     </div>
   )

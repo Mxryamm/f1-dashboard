@@ -3,6 +3,9 @@ import Header from './components/Header'
 import Dashboard from './pages/Dashboard'
 import Standings from './pages/Standings'
 import Analytics from './pages/Analytics'
+import Predictions from './pages/Predictions'
+import ErrorBoundary from './components/ErrorBoundary'
+import { ToastProvider } from './contexts/ToastContext'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('dashboard')
@@ -13,6 +16,8 @@ function App() {
         return <Standings />
       case 'analytics':
         return <Analytics />
+      case 'predictions':
+        return <Predictions />
       case 'dashboard':
       default:
         return <Dashboard />
@@ -20,12 +25,16 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-f1-bg f1-bg-pattern">
-      <Header onPageChange={setCurrentPage} currentPage={currentPage} />
-      <main className="flex-1">
-        {renderPage()}
-      </main>
-    </div>
+    <ErrorBoundary>
+      <ToastProvider>
+        <div className="min-h-screen bg-f1-bg f1-bg-pattern">
+          <Header onPageChange={setCurrentPage} currentPage={currentPage} />
+          <main className="flex-1">
+            {renderPage()}
+          </main>
+        </div>
+      </ToastProvider>
+    </ErrorBoundary>
   )
 }
 
